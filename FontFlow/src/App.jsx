@@ -1,81 +1,77 @@
 import React, { useState } from 'react';
-import FontAPI from './FontApi'; // Import FontAPI component
-import FontCard from './FontCard'; // Import FontCard component
-import styles from './css/cardGrid.module.css'; // Import the grid styles
-import FontDetail from './FontDetail'; // Import the FontDetail component
+import FontAPI from './FontApi';
+import FontCard from './FontCard';
+import Pagination from './Pagination';
+import ControlBox from './ControlBox';
+import FontDetail from './FontDetail';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AnimatedHeader from './AnimatedHeader'; // Import the new AnimatedHeader component
 import './css/App.css';
 
 function App() {
   const [fonts, setFonts] = useState([]);
   const [sortOption, setSortOption] = useState('popularity');
-  const [showMainContent, setShowMainContent] = useState(false); // New state for controlling the landing page
-  const [fadeOut, setFadeOut] = useState(false); // State to handle the fade-out effect
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const fontsPerPage = 20;
 
-  const handleSortChange = (event) => {
-    setSortOption(event.target.value);
+  const handleFilterChange = (filter) => {
+    setSortOption(filter);
   };
 
-  // Function to handle entering the site
-  const handleEnterSite = () => {
-    setFadeOut(true); // Start fade-out
-    setTimeout(() => {
-      setShowMainContent(true); // After fade-out, show main content
-    }, 1000); // Delay to match the fade-out duration
+  const handleSearch = (term) => {
+    setSearchTerm(term);
   };
+
+  // Pagination logic
+  const indexOfLastFont = currentPage * fontsPerPage;
+  const indexOfFirstFont = indexOfLastFont - fontsPerPage;
+  const filteredFonts = fonts.filter((font) =>
+    font.family.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const currentFonts = filteredFonts.slice(indexOfFirstFont, indexOfLastFont);
 
   return (
     <Router>
-      <div>
-        {/* If main content is not shown, display the animated header */}
-        {!showMainContent ? (
-          <div className={`landing-page ${fadeOut ? 'fade-out' : ''}`}>
-            <AnimatedHeader />
-            <button className="enter-button" onClick={handleEnterSite}>
-              Enter Site
-            </button>
+      <div className="main-layout">
+        {/* Left section for ControlBox and Title */}
+        <div className="left-column">
+          <h1 className="site-title">FontFlow</h1>
+          <div className="control-box">
+            <ControlBox onFilterChange={handleFilterChange} onSearch={handleSearch} />
           </div>
-        ) : (
-          <div className="main-content fade-in">
-            {/* Dropdown to select sorting option */}
-            <div>
-              <label htmlFor="sort">Sort by: </label>
-              <select id="sort" value={sortOption} onChange={handleSortChange}>
-                <option value="popularity">Popularity</option>
-                <option value="alpha">Alphabetical</option>
-                <option value="date">Date Added</option>
-                <option value="style">Number of Styles</option>
-                <option value="trending">Trending</option>
-              </select>
-            </div>
+        </div>
 
-            {/* Define Routes */}
-            <Routes>
-              {/* Default route showing the font grid */}
-              <Route
-                path="/"
-                element={
-                  <>
-                    <FontAPI sortOption={sortOption} setFonts={setFonts} />
-                    <div className={styles.fontGrid}>
-                      {fonts.length > 0 ? (
-                        fonts.slice(0, 50).map((font) => (
-                          <FontCard key={font.family} family={font.family} />
-                        ))
-                      ) : (
-                        <p>No fonts to display</p>
-                      )}
-                    </div>
-                  </>
-                }
-              />
+        {/* Right section for font cards and content */}
+        <div className="font-content">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <FontAPI sortOption={sortOption} setFonts={setFonts} />
+                  <div className="fontGrid">
+                    {currentFonts.length > 0 ? (
+                      currentFonts.map((font) => (
+                        <FontCard key={font.family} family={font.family} />
+                      ))
+                    ) : (
+                      <p>No fonts to display</p>
+                    )}
+                  </div>
 
-              {/* Route to display the font details page */}
-              <Route path="/font/:family" element={<FontDetail fonts={fonts} />} />
-            </Routes>
-          </div>
-        )}
+                  {/* Pagination */}
+                  <Pagination
+                    totalFonts={filteredFonts.length}
+                    fontsPerPage={fontsPerPage}
+                    setCurrentPage={setCurrentPage}
+                    currentPage={currentPage}
+                  />
+                </>
+              }
+            />
+            <Route path="/font/:family" element={<FontDetail fonts={fonts} />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );

@@ -4,8 +4,13 @@
     gap: 20px; /* Space between the grid items */
     padding-right: 10vh;
     margin-top: 5vh;
-   align-items: end;
+   align-items: center;
     }
   
   
-  
+    .pagcard {
+        display: flex;
+        justify-content: end;
+      }
+
+    

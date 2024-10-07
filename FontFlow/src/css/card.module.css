@@ -4,6 +4,8 @@
   border-radius: 8px;
   transition: transform 0.2s ease;
   text-decoration: none;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.116);
   color: inherit;
   width: 50vw;
   overflow: hidden;

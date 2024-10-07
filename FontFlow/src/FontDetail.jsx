@@ -56,6 +56,7 @@ const FontDetail = ({ fonts }) => {
   return (
     <div className="container">
       {/* Styles Section */}
+     
       <section className="specimen-section" id="styles">
         {/* Title and Version */}
         <div className="titleversion">
@@ -114,7 +115,7 @@ const FontDetail = ({ fonts }) => {
                 </div>
 
                 <div className={`snippet-box ${visibleLink === variant ? 'active' : ''}`}>
-                  <p>To use this font, add the following code to your HTML:</p>
+               
                   <pre>
                     <code>
                       &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
