@@ -1,0 +1,61 @@
+/* Initial background and animation for the landing page */
+.landing-page {
+  display: flex;
+  font-size: 5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: linear-gradient(to left top, #0c0c0d, #363c44, #5c737e, #82b0b7, #b3f0e8);
+  background-size: 200% 200%;
+  text-align: center;
+  transition: opacity 1s ease;
+  opacity: 1;
+  animation: shiftBackground 10s infinite ease-in-out;
+}
+
+/* Background gradient change during fade out */
+.landing-page.fade-out {
+  opacity: 0;
+}
+
+/* Main content with fade-in effect */
+.main-content {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.main-content.fade-in {
+  opacity: 1;
+}
+
+/* Keyframes to animate the gradient shift */
+@keyframes shiftBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Enter button styles */
+.enter-button {
+  background-color: #008ede;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.enter-button:hover {
+  background-color: #005f9e;
+  transform: scale(1.05);
+}

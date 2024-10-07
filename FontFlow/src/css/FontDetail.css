@@ -1,0 +1,159 @@
+/* Ensure the container for each variant is flex-based */
+.variant-item {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Make the text and buttons share the same row */
+.variant-content-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ensures text and buttons are on the same line */
+  width: 100%; /* Make sure it takes up the full width */
+  
+}
+
+.variant-content {
+  font-size: 2rem;
+}
+
+/* Align buttons next to each other */
+.variant-buttons {
+  display: flex;
+  gap: 10px; /* Adds space between the buttons */
+  margin-bottom: -2vh;
+  padding-left: 10px;
+}
+@keyframes fallAndBounce {
+  0% {
+    transform: translateY(-50px); /* Falling from above */
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(0); /* Reaching the bottom */
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-10px); /* Bouncing upwards */
+  }
+  100% {
+    transform: translateY(0); /* Settle back in place */
+  }
+}
+
+.snippet-box {
+  margin-top: 10px;
+  background-color:transparent;/* Muted teal, modern contrast to the green */
+  padding: 10px;
+
+  color: white;
+  border-radius: 20px;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  max-height: 0;
+  overflow: hidden;
+  z-index: 2;
+  opacity: 0;
+ }
+
+
+.snippet-box.active {
+  max-height: 500px; /* Adjust this value based on expected content height */
+  opacity: 1;
+  animation: fallAndBounce 0.6s ease; /* Adding the fall and bounce animation */
+}
+
+
+
+/* Title and version */
+.fontTitle {
+  font-family: sans-serif; /* Keep the title in a standard font */
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.fontVersion {
+  font-family: sans-serif; /* Keep the version in a standard font */
+  font-size: 1.2rem;
+  color: #000000;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-right: 13vh;
+  align-items: flex-end;
+
+}
+
+.title {
+  font-size: 2.2rem;
+  display: flex;
+  justify-content: center;
+  padding-top: 3vh;
+}
+
+.titleversion{
+  display: flex;
+  
+  align-items: center;
+  justify-content: center;
+}
+#preview-text{
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  padding-top: 2vh;
+}
+
+.specimen-section{
+  max-width: 1000px;
+}
+
+.variant-label{
+  font-size: 1.5rem;
+  color: #acacac;
+  margin-bottom: 100px;
+  padding: 10px
+}
+
+/* Styling for the buttons in FontDetail.jsx */
+.custom-button {
+  min-width: 112px;
+  background-color: #c2f9fb;
+  border-radius: 100px;
+  box-shadow: rgba(44, 154, 187, 0.1) 1px -15px 10px -10px inset,
+  rgba(44, 165, 187, 0.1) 0 1px 2px, rgba(44, 118, 187, 0.1) 0 2px 4px,
+  rgba(44, 187, 99, 0.1) 0 4px 6px, rgba(44, 158, 187, 0.1) 0 6px 12px,
+  rgba(44, 165, 187, 0.1) 0 10px 8px;
+color: rgb(115, 171, 223);
+
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  z-index: 10;
+}
+
+.custom-button:hover {
+  box-shadow: rgba(41, 147, 235, 0.2) 0 -25px 18px -14px inset,
+  rgba(54, 195, 219, 0.15) 0 1px 2px, rgba(75, 168, 255, 0.15) 0 2px 4px,
+  rgba(44, 187, 99, 0.15) 0 4px 8px, rgba(44, 158, 187, 0.15) 0 8px 16px,
+  rgba(44, 165, 187, 0.15) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+.fontVersion{
+  color: white;
+}
+
+

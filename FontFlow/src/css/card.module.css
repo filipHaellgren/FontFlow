@@ -1,0 +1,28 @@
+.card {
+  padding-left: 20px;
+  box-shadow: rgba(0, 0, 0, 0.25) -5px -5px 20px -15px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  width: 50vw;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 8px 8px 15px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Keep the default font style for the h3 */
+.fontName {
+  font-family: sans-serif; /* or specify a different fallback font */
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+

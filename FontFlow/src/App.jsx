@@ -1,75 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import FontAPI from './FontApi'; // Import FontAPI component
+import FontCard from './FontCard'; // Import FontCard component
+import styles from './css/cardGrid.module.css'; // Import the grid styles
+import FontDetail from './FontDetail'; // Import the FontDetail component
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AnimatedHeader from './AnimatedHeader'; // Import the new AnimatedHeader component
+import './css/App.css';
 
 function App() {
   const [fonts, setFonts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [sortOption, setSortOption] = useState('popularity'); // Default sort option
-
-  // Function to fetch fonts with the selected sorting option
-  const fetchFonts = async (sort) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyA1AeGFpEZaoa_j5rQQkZmLP2yYPsdtrmc&sort=${sort}`
-      );
-      setFonts(response.data.items);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching fonts:", error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch fonts when the component mounts or when the sortOption changes
-    fetchFonts(sortOption);
-  }, [sortOption]);
-
-  const addFontLinkToHead = (fontFamily) => {
-    const link = document.createElement("link");
-    link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(/ /g, '+')}&display=swap`;
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-  };
+  const [sortOption, setSortOption] = useState('popularity');
+  const [showMainContent, setShowMainContent] = useState(false); // New state for controlling the landing page
+  const [fadeOut, setFadeOut] = useState(false); // State to handle the fade-out effect
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
   };
 
-  if (loading) {
-    return <div>Loading fonts...</div>;
-  }
+  // Function to handle entering the site
+  const handleEnterSite = () => {
+    setFadeOut(true); // Start fade-out
+    setTimeout(() => {
+      setShowMainContent(true); // After fade-out, show main content
+    }, 1000); // Delay to match the fade-out duration
+  };
 
   return (
-    <div>
-      <h1>Google Fonts Showcase</h1>
-
-      {/* Dropdown to select sorting option */}
+    <Router>
       <div>
-        <label htmlFor="sort">Sort by: </label>
-        <select id="sort" value={sortOption} onChange={handleSortChange}>
-          <option value="popularity">Popularity</option>
-          <option value="alpha">Alphabetical</option>
-          <option value="date">Date Added</option>
-          <option value="style">Number of Styles</option>
-          <option value="trending">Trending</option>
-        </select>
-      </div>
-
-      {/* Display the fonts */}
-      <div>
-        {fonts.slice(0, 50).map((font) => {
-          addFontLinkToHead(font.family);
-          return (
-            <div key={font.family} style={{ fontFamily: font.family, marginBottom: '20px' }}>
-              <h2>{font.family}</h2>
-              <p>The quick brown fox jumps over the lazy dog. (Sample text)</p>
+        {/* If main content is not shown, display the animated header */}
+        {!showMainContent ? (
+          <div className={`landing-page ${fadeOut ? 'fade-out' : ''}`}>
+            <AnimatedHeader />
+            <button className="enter-button" onClick={handleEnterSite}>
+              Enter Site
+            </button>
+          </div>
+        ) : (
+          <div className="main-content fade-in">
+            {/* Dropdown to select sorting option */}
+            <div>
+              <label htmlFor="sort">Sort by: </label>
+              <select id="sort" value={sortOption} onChange={handleSortChange}>
+                <option value="popularity">Popularity</option>
+                <option value="alpha">Alphabetical</option>
+                <option value="date">Date Added</option>
+                <option value="style">Number of Styles</option>
+                <option value="trending">Trending</option>
+              </select>
             </div>
-          );
-        })}
+
+            {/* Define Routes */}
+            <Routes>
+              {/* Default route showing the font grid */}
+              <Route
+                path="/"
+                element={
+                  <>
+                    <FontAPI sortOption={sortOption} setFonts={setFonts} />
+                    <div className={styles.fontGrid}>
+                      {fonts.length > 0 ? (
+                        fonts.slice(0, 50).map((font) => (
+                          <FontCard key={font.family} family={font.family} />
+                        ))
+                      ) : (
+                        <p>No fonts to display</p>
+                      )}
+                    </div>
+                  </>
+                }
+              />
+
+              {/* Route to display the font details page */}
+              <Route path="/font/:family" element={<FontDetail fonts={fonts} />} />
+            </Routes>
+          </div>
+        )}
       </div>
-    </div>
+    </Router>
   );
 }
 

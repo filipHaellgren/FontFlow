@@ -1,0 +1,11 @@
+.fontGrid {
+    display: flex;
+    flex-direction:column;
+    gap: 20px; /* Space between the grid items */
+    padding-right: 10vh;
+    margin-top: 5vh;
+   align-items: end;
+    }
+  
+  
+  
